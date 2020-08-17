@@ -75,4 +75,5 @@ setuptools.setup(
             'jupyter-rubinlab = ' + NAME + '.rubinlabapp.rubinlabapp:main'
         ],
     },
+    zip_safe=False,
 )
