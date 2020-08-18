@@ -57,6 +57,7 @@ setuptools.setup(
         "kubernetes>=11,<12",
         "maproxy>=0.0.12,<1",
         "pyvo>=1,<2",
+        "nbreport>=0.7,<1.0",
         "requests>=2.22,<3.0",
         "jupyterhub>=1,<2",
         "jupyterlab>=2.2,<3.0",
