@@ -9,7 +9,7 @@ def _jupyter_server_extension_paths():
     """
     Function to declare Jupyter Server Extension Paths.
     """
-    return [{"module": "rubin_jupyter_utils.lab.hub_comm", }]
+    return [{"module": "rubin_jupyter_utils.lab.serverextensions.hub_comm", }]
 
 
 def load_jupyter_server_extension(nbapp):
