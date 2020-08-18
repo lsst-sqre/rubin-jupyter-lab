@@ -5,13 +5,15 @@ import pyvo
 import pyvo.auth.authsession
 
 from rubin_jupyter_utils.helpers import get_access_token, parse_access_token
+from rubin_jupyter_utils.config import RubinConfig
 
 
 def _get_tap_url():
-    if "EXTERNAL_TAP_URL" in os.environ:
-        return os.environ["EXTERNAL_TAP_URL"]
+    rc = RubinConfig()
+    if rc.external_tap_url:
+        return rc.external_tap_url
     else:
-        return os.environ["EXTERNAL_INSTANCE_URL"] + os.environ["TAP_ROUTE"]
+        return rc.external_instance_url + rc.tap_route
 
 
 def _get_token():

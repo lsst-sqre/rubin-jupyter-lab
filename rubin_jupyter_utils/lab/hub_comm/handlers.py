@@ -2,10 +2,10 @@
 This is a Handler Module to facilitate communication with JupyterHub in
 the Rubin Observatory Science Platform context.
 """
-import os
 import requests
 from notebook.utils import url_path_join as ujoin
 from notebook.base.handlers import APIHandler
+from rubin_jupyter_utils.config import RubinConfig
 
 
 class RubinHub_handler(APIHandler):
@@ -20,10 +20,6 @@ class RubinHub_handler(APIHandler):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.api_token = os.getenv("JUPYTERHUB_API_TOKEN") or ""
-        self.hub_api = os.getenv("JUPYTERHUB_API_URL") or ""
-        self.user = os.getenv("JUPYTERHUB_USER") or ""
-        self.headers = {"Authorization": "token {}".format(self.api_token)}
 
     def delete(self):
         """
@@ -34,19 +30,21 @@ class RubinHub_handler(APIHandler):
         named servers.
         """
 
-        if not self.user:
+        cfg = RubinConfig()
+
+        if not cfg.user:
             self.log.warning("User unknown; Hub communication impossible.")
             return
-        if not self.api_token:
+        if not cfg.hub_headers or not cfg.hub_headers['Authorization']:
             self.log.warning("Token unknown; Hub communication impossible.")
             return
-        if not self.hub_api:
+        if not cfg.hub_api:
             self.log.warning("API URL unknown; Hub communication impossible.")
             return
-        endpoint = ujoin(self.hub_api, "/users/{}/server".format(self.user))
+        endpoint = ujoin(cfg.hub_api, "/users/{}/server".format(cfg.user))
         # Boom goes the dynamite.
         self.log.info("Requesting DELETE from {}".format(endpoint))
-        requests.delete(endpoint, headers=self.headers)
+        requests.delete(endpoint, headers=cfg.hub_headers)
 
 
 def setup_handlers(web_app):
