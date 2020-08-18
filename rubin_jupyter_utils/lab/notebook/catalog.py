@@ -1,26 +1,29 @@
-import os
-
 import requests
 import pyvo
 import pyvo.auth.authsession
-
 from rubin_jupyter_utils.helpers import get_access_token, parse_access_token
 from rubin_jupyter_utils.config import RubinConfig
 
 
 def _get_tap_url():
     rc = RubinConfig()
-    if rc.external_tap_url:
-        return rc.external_tap_url
-    else:
-        return rc.external_instance_url + rc.tap_route
+    tapurl = rc.external_tap_url or (rc.external_instance_url +
+                                     rc.tap_route)
+    return tapurl
+
+
+def _get_gf_endpoint():
+    rc = RubinConfig()
+    gfendpoint = rc.external_gafaelfawr_url or (rc.external_instance_url +
+                                                rc.gafaelfawr_route)
+    return gfendpoint
 
 
 def _get_token():
     """Returns access token if (and only if) it is valid; otherwise throws
     exception."""
     token = get_access_token()
-    gfendpoint = os.getenv("EXTERNAL_GAFAELFAWR_URL", None)
+    gfendpoint = _get_gf_endpoint()
     # parse_access_token() will throw an exception if the token is not
     #  valid.
     parse_access_token(endpoint=gfendpoint, token=token)
