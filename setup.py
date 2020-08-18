@@ -40,7 +40,8 @@ setuptools.setup(
     name=NAME,
     version=VERSION,
     long_description=LONG_DESCRIPTION,
-    packages=setuptools.find_namespace_packages(["rubin_jupyter_utils/*"]),
+    packages=setuptools.find_namespace_packages(
+        include=["rubin_jupyter_utils.*"]),
     url=URL,
     author=AUTHOR,
     author_email=AUTHOR_EMAIL,
