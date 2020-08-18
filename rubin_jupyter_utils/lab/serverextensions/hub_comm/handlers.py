@@ -54,5 +54,5 @@ def setup_handlers(web_app):
     # add the baseurl to our paths
     host_pattern = ".*$"
     base_url = web_app.settings["base_url"]
-    handlers = [(ujoin(base_url, r"/rubinhub"), RubinHub_handler)]
+    handlers = [(ujoin(base_url, r"/rubin/hub"), RubinHub_handler)]
     web_app.add_handlers(host_pattern, handlers)
