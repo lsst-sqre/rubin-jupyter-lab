@@ -2,8 +2,6 @@
 This is a Handler Module to facilitate communication with JupyterHub in
 the Rubin Observatory Science Platform context.
 """
-import os
-import requests
 from notebook.utils import url_path_join as ujoin
 from notebook.base.handlers import APIHandler
 from rubin_jupyter_utils.config import RubinConfig
@@ -23,7 +21,7 @@ class RubinSettings_handler(APIHandler):
         """
         """
         self.log.info("Sending Rubin settings")
-        return self.rubin_config.dump()
+        self.finish(self.rubin_config.dump())
 
 
 def setup_handlers(web_app):
