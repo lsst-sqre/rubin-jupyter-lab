@@ -12,10 +12,11 @@ def _get_tap_url():
     return tapurl
 
 
-def _get_gf_endpoint():
+def _get_gf_analyze_endpoint():
     rc = RubinConfig()
-    gfendpoint = rc.external_gafaelfawr_url or (rc.external_instance_url +
-                                                rc.gafaelfawr_route)
+    gf = rc.external_gafaelfawr_url or (rc.external_instance_url +
+                                        rc.gafaelfawr_route)
+    gfendpoint = gf + '/analyze'
     return gfendpoint
 
 
@@ -23,7 +24,7 @@ def _get_token():
     """Returns access token if (and only if) it is valid; otherwise throws
     exception."""
     token = get_access_token()
-    gfendpoint = _get_gf_endpoint()
+    gfendpoint = _get_gf_analyze_endpoint()
     # parse_access_token() will throw an exception if the token is not
     #  valid.
     parse_access_token(endpoint=gfendpoint, token=token)
