@@ -5,10 +5,6 @@ from rubin_jupyter_utils.helpers import get_access_token
 from rubin_jupyter_utils.config import RubinConfig
 
 
-class TokenNotFoundError(Exception):
-    """No access token was found."""
-
-
 def _get_tap_url():
     rc = RubinConfig()
     tapurl = rc.external_tap_url or (rc.external_instance_url +
