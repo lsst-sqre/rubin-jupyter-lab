@@ -1,8 +1,12 @@
 import requests
 import pyvo
 import pyvo.auth.authsession
-from rubin_jupyter_utils.helpers import get_access_token, parse_access_token
+from rubin_jupyter_utils.helpers import get_access_token
 from rubin_jupyter_utils.config import RubinConfig
+
+
+class TokenNotFoundError(Exception):
+    """No access token was found."""
 
 
 def _get_tap_url():
@@ -12,29 +16,13 @@ def _get_tap_url():
     return tapurl
 
 
-def _get_gf_analyze_endpoint():
-    rc = RubinConfig()
-    gf = rc.external_gafaelfawr_url or (rc.external_instance_url +
-                                        rc.gafaelfawr_route)
-    gfendpoint = gf + '/analyze'
-    return gfendpoint
-
-
-def _get_token():
-    """Returns access token if (and only if) it is valid; otherwise throws
-    exception."""
-    token = get_access_token()
-    gfendpoint = _get_gf_analyze_endpoint()
-    # parse_access_token() will throw an exception if the token is not
-    #  valid.
-    parse_access_token(endpoint=gfendpoint, token=token)
-    return token
-
-
 def _get_auth():
     tap_url = _get_tap_url()
     s = requests.Session()
-    s.headers["Authorization"] = "Bearer " + _get_token()
+    tok = get_access_token()
+    if not tok:
+        raise TokenNotFoundError
+    s.headers["Authorization"] = "Bearer " + tok
     auth = pyvo.auth.authsession.AuthSession()
     auth.credentials.set("lsst-token", s)
     auth.add_security_method_for_url(tap_url, "lsst-token")
