@@ -19,10 +19,7 @@ def _get_tap_url():
 def _get_auth():
     tap_url = _get_tap_url()
     s = requests.Session()
-    tok = get_access_token()
-    if not tok:
-        raise TokenNotFoundError
-    s.headers["Authorization"] = "Bearer " + tok
+    s.headers["Authorization"] = "Bearer " + get_access_token()
     auth = pyvo.auth.authsession.AuthSession()
     auth.credentials.set("lsst-token", s)
     auth.add_security_method_for_url(tap_url, "lsst-token")
