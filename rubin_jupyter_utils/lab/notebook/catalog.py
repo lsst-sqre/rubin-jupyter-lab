@@ -21,7 +21,8 @@ def deprecated(new_name=""):
             if new_name:
                 warnings.warn(
                     f"Call to deprecated function {func.__name__}.  "
-                    + "This function may be removed at any point in the future.  "
+                    + "This function may be removed at any point "
+                    + "in the future.  "
                     + f"Please use {new_name} instead.",
                     category=DeprecationWarning,
                     stacklevel=2,
@@ -29,7 +30,8 @@ def deprecated(new_name=""):
             else:
                 warnings.warn(
                     f"Call to deprecated function {func.__name__}.  "
-                    + "This function may be removed at any point in the future.",
+                    + "This function may be removed at any point "
+                    + "in the future.",
                     category=DeprecationWarning,
                     stacklevel=2,
                 )
