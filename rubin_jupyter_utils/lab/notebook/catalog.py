@@ -7,35 +7,45 @@ from rubin_jupyter_utils.helpers import get_access_token
 from rubin_jupyter_utils.config import RubinConfig
 
 
-def deprecated(new_name=''):
+def deprecated(new_name=""):
     def deprecated(func):
         """This is a decorator which can be used to mark functions
         as deprecated. It will result in a warning being emitted
         when the function is used."""
+
         @functools.wraps(func)
         def new_func(*args, **kwargs):
-            warnings.simplefilter("always", DeprecationWarning)  # turn off filter
+            warnings.simplefilter(
+                "always", DeprecationWarning
+            )  # turn off filter
             if new_name:
-                warnings.warn(f"Call to deprecated function {func.__name__}.  " +
-                              "This function may be removed at any point in the future.  " +
-                              f"Please use {new_name} instead.",
-                              category=DeprecationWarning,
-                              stacklevel=2)
+                warnings.warn(
+                    f"Call to deprecated function {func.__name__}.  "
+                    + "This function may be removed at any point in the future.  "
+                    + f"Please use {new_name} instead.",
+                    category=DeprecationWarning,
+                    stacklevel=2,
+                )
             else:
-                warnings.warn(f"Call to deprecated function {func.__name__}.  " +
-                              "This function may be removed at any point in the future.",
-                              category=DeprecationWarning,
-                              stacklevel=2)
-            warnings.simplefilter('default', DeprecationWarning)  # reset filter
+                warnings.warn(
+                    f"Call to deprecated function {func.__name__}.  "
+                    + "This function may be removed at any point in the future.",
+                    category=DeprecationWarning,
+                    stacklevel=2,
+                )
+            warnings.simplefilter(
+                "default", DeprecationWarning
+            )  # reset filter
             return func(*args, **kwargs)
+
         return new_func
+
     return deprecated
 
 
 def _get_tap_url():
     rc = RubinConfig()
-    tapurl = rc.external_tap_url or (rc.external_instance_url +
-                                     rc.tap_route)
+    tapurl = rc.external_tap_url or (rc.external_instance_url + rc.tap_route)
     return tapurl
 
 

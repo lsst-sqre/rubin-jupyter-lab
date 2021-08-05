@@ -33,9 +33,9 @@ def _label_from_fields(version_config):
         display_hash = f" [ {trunc_hash}... ] "
 
     # Then just concatenate them all together
-    label=f"{display_desc}{display_name}{display_hash}"
+    label = f"{display_desc}{display_name}{display_hash}"
     return label
-    
+
 
 class DisplayVersion_handler(APIHandler):
     """
@@ -45,18 +45,15 @@ class DisplayVersion_handler(APIHandler):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.version_config={}
+        self.version_config = {}
         for i in ["JUPYTER_IMAGE", "IMAGE_DESCRIPTION", "IMAGE_DIGEST"]:
             self.version_config[i.lower()] = self._files_then_env(i)
-        self.version_config["label"] = _label_from_fields(
-            self.version_config)
+        self.version_config["label"] = _label_from_fields(self.version_config)
 
     def get(self):
-        """
-        """
+        """ """
         self.log.info("Sending Display Version settings")
         self.finish(json.dumps(self.version_config))
-
 
     def _files_then_env(self, symbol):
         """Try to extract a symbol.  First use the path at which it should be
@@ -75,6 +72,7 @@ class DisplayVersion_handler(APIHandler):
             val = os.getenv(symbol, "")
         return val
 
+
 def setup_handlers(web_app):
     """
     Function used to setup all the handlers used.
@@ -82,6 +80,7 @@ def setup_handlers(web_app):
     # add the baseurl to our paths
     host_pattern = ".*$"
     base_url = web_app.settings["base_url"]
-    handlers = [(ujoin(base_url, r"/rubin/display_version"),
-                 DisplayVersion_handler)]
+    handlers = [
+        (ujoin(base_url, r"/rubin/display_version"), DisplayVersion_handler)
+    ]
     web_app.add_handlers(host_pattern, handlers)

@@ -6,7 +6,7 @@ from kubernetes import client, config
 
 
 def format_bytes(n):
-    """ Format bytes as text
+    """Format bytes as text
 
     >>> format_bytes(1)
     '1 B'
@@ -37,18 +37,15 @@ def format_bytes(n):
 
 
 def get_hostname():
-    """Utility function to return hostname or, failing that, "localhost".
-    """
+    """Utility function to return hostname or, failing that, "localhost"."""
     return os.environ.get("HOSTNAME") or "localhost"
 
 
 def show_with_bokeh_server(obj):
-    """Method to wrap bokeh with proxy URL
-    """
+    """Method to wrap bokeh with proxy URL"""
 
     def jupyter_proxy_url(port):
-        """Construct proxy URL from environment
-        """
+        """Construct proxy URL from environment"""
         # If port is None we're asking about the URL
         # for the origin header.
         return get_proxy_url(port) or "*"
@@ -57,8 +54,7 @@ def show_with_bokeh_server(obj):
 
 
 def get_pod():
-    """Get pod record.  Throws an error if you're not running in a cluster.
-    """
+    """Get pod record.  Throws an error if you're not running in a cluster."""
     config.load_incluster_config()
     api = client.CoreV1Api()
     namespace = "default"

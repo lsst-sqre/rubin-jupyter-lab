@@ -18,8 +18,7 @@ class RubinSettings_handler(APIHandler):
         self.rubin_config = RubinConfig()
 
     def get(self):
-        """
-        """
+        """ """
         self.log.info("Sending Rubin settings")
         self.finish(self.rubin_config.dump())
 

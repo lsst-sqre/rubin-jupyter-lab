@@ -35,7 +35,7 @@ class RubinHub_handler(APIHandler):
         if not cfg.user:
             self.log.warning("User unknown; Hub communication impossible.")
             return
-        if not cfg.hub_headers or not cfg.hub_headers['Authorization']:
+        if not cfg.hub_headers or not cfg.hub_headers["Authorization"]:
             self.log.warning("Token unknown; Hub communication impossible.")
             return
         if not cfg.hub_api:
