@@ -1,11 +1,16 @@
 """Log configuration for Notebooks."""
 
-__all__ = ["IPythonHandler"]
+__all__ = ["IPythonHandler", "forward_lsst_log"]
 
 import logging
 from IPython.display import HTML
 from IPython.display import display
 import html
+
+try:
+    import lsst.log as lsstLog
+except ImportError:
+    lsstLog = None
 
 # Each log level will have the level name use a different color to
 # ensure that warning log messages can be seen more easily.
@@ -62,3 +67,16 @@ class IPythonHandler(logging.Handler):
         level_msg = f'<span style="color: {level_color}">{record.levelname}</span>'
         text = f'<pre style="{_pre_style}">{name_msg} {level_msg}: {message}</pre>'
         display(HTML(text))
+
+
+def forward_lsst_log(level: str):
+    """Forward ``lsst.log`` level messages to Python logging.
+
+    Parameters
+    ----------
+    level : `str`
+        The level name to forward.
+    """
+    if lsstLog is not None:
+        lsstLog.configure_pylog_MDC(level, MDC_class=None)
+        lsstLog.usePythonLogging()
